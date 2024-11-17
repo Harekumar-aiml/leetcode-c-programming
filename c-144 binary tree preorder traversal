@@ -1,0 +1,20 @@
+int nodeCount(struct TreeNode *root){
+    if(!root) return 0;
+    return 1 + nodeCount(root->left) + nodeCount(root->right);
+}
+
+void preorderTraverse(struct TreeNode *root, int *i, int *preorder){
+    if(!root) return;
+    preorder[*i] = root->val;
+    (*i)++;
+    preorderTraverse(root->left, i, preorder);
+    preorderTraverse(root->right, i, preorder);
+}
+
+int* preorderTraversal(struct TreeNode* root, int* returnSize){
+    *returnSize = nodeCount(root);
+    int *result = (int *)malloc((*returnSize) * sizeof(int));
+    int i = 0;
+    preorderTraverse(root, &i, result);
+    return result;
+}
