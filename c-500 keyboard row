@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+
+bool canTypeInOneRow(char* word) {
+    char* rows[] = {"qwertyuiopQWERTYUIOP", "asdfghjklASDFGHJKL", "zxcvbnmZXCVBNM"};
+    int rowIdx = -1;
+    
+    for (int i = 0; i < 3; i++) {
+        if (strchr(rows[i], word[0])) {
+            rowIdx = i;
+            break;
+        }
+    }
+    
+    for (int i = 1; i < strlen(word); i++) {
+        if (!strchr(rows[rowIdx], word[i])) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+char** findWords(char** words, int wordsSize, int* returnSize) {
+    char** result = (char**)malloc(wordsSize * sizeof(char*));
+    *returnSize = 0;
+    
+    for (int i = 0; i < wordsSize; i++) {
+        if (canTypeInOneRow(words[i])) {
+            result[(*returnSize)++] = words[i];
+        }
+    }
+    
+    return result;
+}
+
