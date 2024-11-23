@@ -1,0 +1,37 @@
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void bubbleSort(int* arr, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(&arr[j], &arr[j + 1]);
+            }
+        }
+    }
+}
+
+int findContentChildren(int* g, int gSize, int* s, int sSize) {
+    // Sort the greed factors and cookie sizes using bubble sort
+    bubbleSort(g, gSize);
+    bubbleSort(s, sSize);
+
+    int contentChildren = 0;
+    int i = 0;
+    int j = 0; 
+
+    while (i < gSize && j < sSize) {
+        // If the current cookie size is greater than or equal to
+        // the current child's greed factor, assign the cookie to the child
+        if (s[j] >= g[i]) {
+            contentChildren++;
+            i++; // Move to the next child
+        }
+        j++; // Move to the next cookie
+    }
+
+    return contentChildren;
+}
