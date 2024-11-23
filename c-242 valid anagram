@@ -1,0 +1,28 @@
+bool isAnagram(char* s, char* t) 
+{
+    int len_s1 = strlen(s);
+    int len_t1 = strlen(t);
+    if(len_s1 != len_t1)
+        return false; //best case
+    //hash map
+    int hash_map[500] = {0}; //unknown size of all unicode/ascii char, so 500 enough
+    int i = 0;
+    
+    while(s[i])
+    {
+        hash_map[s[i]]++; //increment each char count
+        i++;
+    }
+    i = 0; //reset the iterator for next string
+    while(t[i])
+    {
+        if(hash_map[t[i]] >0)
+        {
+            hash_map[t[i]]--; //decrement here because this was present in source string
+            i++;
+        }
+        else
+            return false; //does not match, so false
+    }
+    return true;
+}
