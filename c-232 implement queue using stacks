@@ -1,0 +1,96 @@
+typedef struct Node {
+    int val;
+    struct Node* next;
+} Node;
+
+typedef struct Stack {
+    Node* head;
+    int size;
+} Stack;
+
+typedef struct {
+    Stack* stack1;
+    Stack* stack2;
+} MyQueue;
+
+Stack* initStack() {
+    Stack* stack = (Stack*)malloc(sizeof(Stack));
+    stack->head = NULL;
+    stack->size = 0;
+    return stack;
+}
+
+void stackPush(Stack* stack, int val) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->val = val;
+    node->next = stack->head;
+    stack->head = node;
+    stack->size++;
+}
+
+int stackPop(Stack* stack) {
+    if (!stack->head)
+        return -1;
+    Node* temp = stack->head;
+    stack->head = stack->head->next;
+    int res = temp->val;
+    stack->size--;
+    free(temp);
+    return res;
+}
+
+int stackTop(Stack* stack) {
+    if (!stack->head)
+        return -1;
+    return stack->head->val;
+}
+bool stackIsEmpty(Stack* stack) { return stack->head == NULL; }
+
+int stackSize(Stack* stack) { return stack->size; }
+
+void stackFree(Stack* stack) {
+    Node* nodeDeleter = stack->head;
+    while (stack->head) {
+        stack->head = stack->head->next;
+        free(nodeDeleter);
+        nodeDeleter = stack->head;
+    }
+    free(stack);
+}
+
+MyQueue* myQueueCreate() {
+    MyQueue* queue = (MyQueue*)malloc(sizeof(MyQueue));
+    queue->stack1 = initStack();
+    queue->stack2 = initStack();
+    return queue;
+}
+
+void myQueuePush(MyQueue* obj, int x) { stackPush(obj->stack1, x); }
+
+int myQueuePop(MyQueue* obj) {
+    if (stackIsEmpty(obj->stack2)) {
+        while (!stackIsEmpty(obj->stack1)) {
+            stackPush(obj->stack2, stackPop(obj->stack1));
+        }
+    }
+    return stackPop(obj->stack2);
+}
+
+int myQueuePeek(MyQueue* obj) {
+    if (stackIsEmpty(obj->stack2)) {
+        while (!stackIsEmpty(obj->stack1)) {
+            stackPush(obj->stack2, stackPop(obj->stack1));
+        }
+    }
+    return stackTop(obj->stack2);
+}
+
+bool myQueueEmpty(MyQueue* obj) {
+    return stackIsEmpty(obj->stack1) && stackIsEmpty(obj->stack2);
+}
+
+void myQueueFree(MyQueue* obj) {
+    stackFree(obj->stack1);
+    stackFree(obj->stack2);
+    free(obj);
+}
