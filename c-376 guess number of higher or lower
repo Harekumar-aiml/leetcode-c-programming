@@ -1,0 +1,30 @@
+/** 
+ * Forward declaration of guess API.
+ * @param  num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * int guess(int num);
+ */
+
+int guessNumber(int n){
+    int high = n;
+    int low = 1;
+    int currGuess = n >> 1;
+    int keepGoing = -1;	
+    int highLowDiff;
+    while(low < high){
+        currGuess = low + ((high - low) >>1);
+        keepGoing = guess(currGuess);
+        if (keepGoing == 0){
+            return currGuess;
+        }
+        if (keepGoing == 1){
+            low = currGuess + 1;
+        }
+        else if(keepGoing == -1){
+            high = currGuess - 1;
+        }
+    }
+    return low;
+}
