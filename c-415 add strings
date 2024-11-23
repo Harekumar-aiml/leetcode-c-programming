@@ -1,0 +1,16 @@
+char* addStrings(char* n1, char* n2) {
+    int m = strlen(n1);
+    int n = strlen(n2);
+    int len = (m > n ? m : n);
+    char* res = (char*)calloc(len + 2, sizeof(char));
+    int c = 0;
+    for(int i = m - 1, j = n - 1; i >= 0 || j >= 0; --i, --j){
+        int a = (i >= 0) ? n1[i] - '0' : 0;
+        int b = (j >= 0) ? n2[j] - '0' : 0;
+        int val = a + b + c;
+        res[len--] = (val % 10) + '0';
+        c = val / 10;
+    }
+    if(c) { res[0] = c + '0'; }
+    return c == 0 ? res + 1 : res;
+}
