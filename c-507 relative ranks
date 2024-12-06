@@ -1,0 +1,49 @@
+typedef struct item {
+    int score;
+    int index;
+} item_t;
+
+int cmp(const void *a, const void *b)
+{
+    return ((item_t *)b)->score - ((item_t *)a)->score;
+}
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** findRelativeRanks(int* score, int scoreSize, int* returnSize) {
+    item_t *items = (item_t *)malloc(sizeof(item_t) * scoreSize);
+    char **answer = (char **)malloc(sizeof(char *) * scoreSize);
+
+    *returnSize = scoreSize;
+
+    for (int i = 0; i < scoreSize; i++) {
+        items[i].score = score[i];
+        items[i].index = i;
+    }
+
+    qsort(items, scoreSize, sizeof(item_t), cmp);
+
+    answer[items[0].index] = (char *)malloc(sizeof(char) * 13);
+    strcpy(answer[items[0].index], "Gold Medal");
+
+    if (scoreSize >= 2) {
+        answer[items[1].index] = (char *)malloc(sizeof(char) * 13);
+        strcpy(answer[items[1].index], "Silver Medal");
+    }
+
+    if (scoreSize >= 3) {
+        answer[items[2].index] = (char *)malloc(sizeof(char) * 13);
+        strcpy(answer[items[2].index], "Bronze Medal");
+    }
+
+    /* Generate rank */
+    for (int i = 3; i < scoreSize; i++) {
+        answer[items[i].index] = (char *)malloc(sizeof(char) * 8);
+        sprintf(answer[items[i].index], "%d", i + 1);
+    }
+
+    free(items);
+
+    return answer;
+}
