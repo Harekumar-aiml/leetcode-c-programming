@@ -1,0 +1,16 @@
+
+
+int fib(int n)
+{
+    int a=0,b=1,c=0,i;
+    if(n>=0 && n<=30)
+    {
+        for(i=1;i<=n && n!=0;i++)
+        {
+            a=b;
+            b=c;
+            c=a+b;
+        }
+    }
+    return c;
+}
